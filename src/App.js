@@ -1,23 +1,54 @@
-import React, { Component, lazy, Suspense } from 'react';
-import 'bulma/css/bulma.css';
-import './styles.scss';
+import React, { lazy, Suspense } from 'react';
+import { makeStyles } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline'
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { HeaderBar, NavBar, NotFound } from './components';
 import About from './About';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    display: 'flex',
+    height: '100%',
+    overflow: 'hidden',
+    width: '100%'
+  },
+  wrapper: {
+    display: 'flex',
+    flex: '1 1 auto',
+    overflow: 'hidden',
+    paddingTop: 64,
+    paddingLeft: 256
+  },
+  contentContainer: {
+    display: 'flex',
+    flex: '1 1 auto',
+    overflow: 'hidden'
+  },
+  content: {
+    flex: '1 1 auto',
+    height: '100%',
+    overflow: 'auto'
+  }
+}));
+
 const Products = withRouter(
   lazy(() => import(/* webpackChunkName: "products" */ './products/Products'))
 );
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <HeaderBar />
-        <div className="section columns">
-          <NavBar />
-          <main className="column">
+const App = () => {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <HeaderBar />
+      <NavBar />
+      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+      <CssBaseline />
+      <div className={classes.wrapper}>
+        <div className={classes.contentContainer}>
+          <div className={classes.content}>
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
                 <Redirect from="/" exact to="/products" />
@@ -26,11 +57,11 @@ class App extends Component {
                 <Route exact path="**" component={NotFound} />
               </Switch>
             </Suspense>
-          </main>
+          </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default App;
