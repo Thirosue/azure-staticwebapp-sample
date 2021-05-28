@@ -21,19 +21,19 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const NavBar = withRouter(props => {
+function NavBar({ history }) {
   const classes = useStyles();
 
   const items = [
     {
       icon: HomeIcon,
       title: 'Home',
-      handleAction: () => props.history.push('/')
+      handleAction: () => history.push('/')
     },
     {
       icon: InfoIcon,
       title: 'About',
-      handleAction: () => props.history.push('/about')
+      handleAction: () => history.push('/about')
     },
     {
       icon: LogOutIcon,
@@ -69,6 +69,6 @@ const NavBar = withRouter(props => {
       </Box>
     </Drawer>
   );
-});
+};
 
-export default NavBar;
+export default withRouter(NavBar);

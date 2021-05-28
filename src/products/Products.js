@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { ListHeader, ModalYesNo } from '../components';
+import { ModalYesNo } from '../components';
 import ProductDetail from './ProductDetail';
 import ProductList from './ProductList';
 import useProducts from './useProducts';
@@ -67,19 +67,8 @@ function Products({ history }) {
     captains.log(`you selected ${selectedProduct.name}`);
   }
 
-  function handleRefresh() {
-    handleCancelProduct();
-    getProducts();
-  }
-
   return (
-    <div className="content-container">
-      <ListHeader
-        title="Products"
-        handleAdd={addNewProduct}
-        handleRefresh={handleRefresh}
-        routePath="/products"
-      />
+    <>
       <div className="columns is-multiline is-variable">
         <div className="column is-8">
           <Switch>
@@ -89,6 +78,7 @@ function Products({ history }) {
               component={() => (
                 <ProductList
                   products={products}
+                  addNewProduct={addNewProduct}
                   selectedProduct={selectedProduct}
                   handleSelectProduct={handleSelectProduct}
                   handleDeleteProduct={handleDeleteProduct}
@@ -119,7 +109,7 @@ function Products({ history }) {
           onYes={handleDeleteFromModal}
         />
       )}
-    </div>
+    </>
   );
 }
 

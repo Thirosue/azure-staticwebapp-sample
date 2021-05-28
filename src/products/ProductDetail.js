@@ -1,96 +1,136 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable */
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  TextField,
+  makeStyles,
+  Button,
+} from '@material-ui/core';
+import { useForm } from 'react-hook-form';
 
-import { ButtonFooter, InputDetail } from '../components';
+const useStyles = makeStyles(() => ({
+  root: {},
+  button: {
+    textTransform: 'none',
+  },
+}));
 
 function ProductDetail({
-  product: initProduct,
+  product,
   handleCancelProduct,
   handleSaveProduct,
   history,
 }) {
-  const [product, setProduct] = useState(Object.assign({}, initProduct));
+  const classes = useStyles();
+  const { register, handleSubmit, errors } = useForm();
 
   useEffect(() => {
+    console.log(product)
     if (!product) {
       history.push('/products'); // no product, bail out of Details
     }
   }, [product, history]);
 
-  function handleSave() {
-    const chgProduct = { ...product, id: product.id || null };
-    handleSaveProduct(chgProduct);
-  }
-
-  function handleNameChange(e) {
-    setProduct({ ...product, name: e.target.value });
-  }
-
-  function handleDescriptionChange(e) {
-    setProduct({ ...product, description: e.target.value });
-  }
-
-  function handleQuantityChange(e) {
-    setProduct({ ...product, quantity: e.target.value });
+  function handleSave(data) {
+    console.log(data)
   }
 
   return (
-    <div className="card edit-detail">
-      <header className="card-header">
-        <p className="card-header-title">
-          {product.name}
-          &nbsp;
-        </p>
-      </header>
-      <div className="card-content">
-        <div className="content">
-          {product.id && (
-            <InputDetail name="id" value={product.id} readOnly="true" />
-          )}
-          <InputDetail
-            name="name"
-            value={product.name}
-            placeholder="Oranges"
-            onChange={handleNameChange}
+    <>
+      <form
+        autoComplete="off"
+        noValidate
+        className={classes.root}
+      >
+        <Card>
+          <CardHeader
+            title="商品情報"
           />
-          <InputDetail
-            name="description"
-            value={product.description}
-            placeholder="box"
-            onChange={handleDescriptionChange}
-          />
-          <div className="field">
-            <label className="label" htmlFor="quantity">
-              quantity
-            </label>
-            <input
-              name="quantity"
-              className="input"
-              type="number"
-              min="1"
-              max="100"
-              defaultValue={product.quantity}
-              placeholder="1"
-              onChange={handleQuantityChange}
-            />
-          </div>
-        </div>
-      </div>
-      <footer className="card-footer ">
-        <ButtonFooter
-          className="cancel-button"
-          iconClasses="fas fa-undo"
-          onClick={handleCancelProduct}
-          label="Cancel"
-        />
-        <ButtonFooter
-          className="save-button"
-          iconClasses="fas fa-save"
-          onClick={handleSave}
-          label="Save"
-        />
-      </footer>
-    </div>
+          <Divider />
+          <CardContent>
+            <Grid
+              container
+              spacing={3}
+            >
+              <Grid item xs={12} md={12}>
+                <TextField
+                  required
+                  id="name"
+                  name="name"
+                  label="商品名"
+                  defaultValue={product?.name}
+                  fullWidth
+                  inputRef={register({ required: true })}
+                  error={Boolean(errors.name)}
+                  helperText={errors.name && '入力してください'}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <TextField
+                  id="description"
+                  name="description"
+                  label="商品説明"
+                  defaultValue={product?.description}
+                  fullWidth
+                  multiline
+                  rows={3}
+                  inputRef={register}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <TextField
+                  required
+                  id="quantity"
+                  name="quantity"
+                  label="数量"
+                  defaultValue={product?.quantity}
+                  fullWidth
+                  inputRef={register({
+                    required: true,
+                    pattern: {
+                      value: /^[0-9]*$/i
+                    }
+                  })}
+                  helperText={errors.quantity && '数値のみで入力してください'}
+                  error={Boolean(errors.quantity)}
+                  variant="outlined"
+                />
+              </Grid>
+            </Grid>
+          </CardContent>
+          <Divider />
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            p={2}
+          >
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={handleSubmit(handleCancelProduct)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={handleSubmit(handleSave)}
+            >
+              Save
+            </Button>
+          </Box>
+        </Card>
+      </form>
+    </>
   );
 }
 
