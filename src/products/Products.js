@@ -1,29 +1,23 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { ModalYesNo } from '../components';
+import useProducts from '../hooks/useProducts';
 import ProductDetail from './ProductDetail';
 import ProductList from './ProductList';
-import useProducts from './useProducts';
 
 const captains = console;
 
-function Products({ history }) {
-  const [productToDelete, setProductToDelete] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const {
-    addProduct,
-    deleteProduct,
-    getProducts,
-    products,
-    selectProduct,
-    selectedProduct,
-    updateProduct,
-  } = useProducts();
+const selectedProduct = {
+  id: 10,
+  name: 'Strawberries',
+  description: '16oz package of fresh organic strawberries',
+  quantity: 1,
+};
 
-  useEffect(() => {
-    getProducts();
-  }, [getProducts]);
+function Products({ history }) {
+  const { products } = useProducts();
+  const [product, selectProduct] = useState({});
 
   function addNewProduct() {
     selectProduct({});
@@ -33,7 +27,7 @@ function Products({ history }) {
   function handleCancelProduct() {
     history.push('/products');
     selectProduct(null);
-    setProductToDelete(null);
+    // setProductToDelete(null);
   }
 
   function handleDeleteProduct(product) {
@@ -49,16 +43,6 @@ function Products({ history }) {
     } else {
       addProduct(product);
     }
-    handleCancelProduct();
-  }
-
-  function handleCloseModal() {
-    setShowModal(false);
-  }
-
-  function handleDeleteFromModal() {
-    setShowModal(false);
-    deleteProduct(productToDelete);
     handleCancelProduct();
   }
 
@@ -79,7 +63,7 @@ function Products({ history }) {
                 <ProductList
                   products={products}
                   addNewProduct={addNewProduct}
-                  selectedProduct={selectedProduct}
+                  selectedProduct={product}
                   handleSelectProduct={handleSelectProduct}
                   handleDeleteProduct={handleDeleteProduct}
                 />
@@ -91,7 +75,7 @@ function Products({ history }) {
               component={() => {
                 return (
                   <ProductDetail
-                    product={selectedProduct}
+                    product={product}
                     handleCancelProduct={handleCancelProduct}
                     handleSaveProduct={handleSaveProduct}
                   />
@@ -101,14 +85,6 @@ function Products({ history }) {
           </Switch>
         </div>
       </div>
-
-      {showModal && (
-        <ModalYesNo
-          message={`Would you like to delete ${productToDelete.name}?`}
-          onNo={handleCloseModal}
-          onYes={handleDeleteFromModal}
-        />
-      )}
     </>
   );
 }

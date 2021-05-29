@@ -13,15 +13,8 @@ import {
   TableRow,
   Paper,
   Checkbox,
-  IconButton,
 } from '@material-ui/core';
 import {
-  Add as AddIcon,
-} from '@material-ui/icons';
-
-import {
-  ButtonFooter,
-  CardContent,
   TablePaginationActions,
   EnhancedTableToolbar,
   EnhancedTableHead,
