@@ -6,6 +6,9 @@ import ListHeader from './ListHeader';
 import ModalYesNo from './ModalYesNo';
 import NavBar from './NavBar';
 import NotFound from './NotFound';
+import TablePaginationActions from './TablePaginationActions';
+import EnhancedTableHead from './EnhancedTableHead';
+import EnhancedTableToolbar from './EnhancedTableToolbar';
 
 export {
   ButtonFooter,
@@ -15,5 +18,8 @@ export {
   ListHeader,
   NavBar,
   NotFound,
-  ModalYesNo
+  ModalYesNo,
+  TablePaginationActions,
+  EnhancedTableHead,
+  EnhancedTableToolbar,
 };

@@ -19,6 +19,9 @@ const useStyles = makeStyles(() => ({
   button: {
     textTransform: 'none',
   },
+  actionArea: {
+    marginRight: '1em'
+  }
 }));
 
 function ProductDetail({
@@ -31,7 +34,6 @@ function ProductDetail({
   const { register, handleSubmit, errors } = useForm();
 
   useEffect(() => {
-    console.log(product)
     if (!product) {
       history.push('/products'); // no product, bail out of Details
     }
@@ -112,21 +114,25 @@ function ProductDetail({
             justifyContent="flex-end"
             p={2}
           >
-            <Button
-              variant="contained"
-              className={classes.button}
-              onClick={handleSubmit(handleCancelProduct)}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={handleSubmit(handleSave)}
-            >
-              Save
-            </Button>
+            <span className={classes.actionArea}>
+              <Button
+                variant="contained"
+                className={classes.button}
+                onClick={handleSubmit(handleCancelProduct)}
+              >
+                Cancel
+              </Button>
+            </span>
+            <span>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={handleSubmit(handleSave)}
+              >
+                Save
+              </Button>
+            </span>
           </Box>
         </Card>
       </form>
