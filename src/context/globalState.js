@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import GlobalContext from './global-context';
-import Progress from '../components/Progress';
+import { Progress } from '../components';
 
 // Global State Settings
 const initialState = {

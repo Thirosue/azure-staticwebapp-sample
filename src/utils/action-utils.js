@@ -15,3 +15,5 @@ export const parseItem = (response, code) => {
   }
   return item;
 };
+
+export const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));

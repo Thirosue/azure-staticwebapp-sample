@@ -132,8 +132,6 @@ function ProductList({
 
   return (
     <div>
-      {products.length === 0 && <div>Loading data ...</div>}
-
       <div className={classes.root}>
         <Paper className={classes.paper}>
           <EnhancedTableToolbar

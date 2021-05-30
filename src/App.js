@@ -6,7 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import useDocumentTitle from './hooks/useDocumentTitle'
-import { HeaderBar, NavBar, NotFound } from './components';
+import { HeaderBar, NavBar, NotFound, Progress } from './components';
 import About from './About';
 
 const useStyles = makeStyles((theme) => ({
@@ -61,7 +61,7 @@ const App = ({ history }) => {
       <div className={classes.wrapper}>
         <div className={classes.contentContainer}>
           <div className={classes.content}>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Progress processing={true} />}>
               <Switch>
                 <Redirect from="/" exact to="/products" />
                 <Route path="/products" component={Products} />

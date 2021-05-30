@@ -4,6 +4,7 @@ import NotFound from './NotFound';
 import TablePaginationActions from './table/TablePaginationActions';
 import EnhancedTableHead from './table/EnhancedTableHead';
 import EnhancedTableToolbar from './table/EnhancedTableToolbar';
+import Progress from './Progress';
 
 export {
   HeaderBar,
@@ -12,4 +13,5 @@ export {
   TablePaginationActions,
   EnhancedTableHead,
   EnhancedTableToolbar,
+  Progress,
 };
