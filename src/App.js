@@ -45,10 +45,6 @@ const App = ({ history }) => {
   const classes = useStyles();
   const title = useDocumentTitle(history.location);
 
-  React.useEffect(() => {
-    console.log(history.location)
-  }, [history])
-
   return <>
     <Helmet>
       <meta
