@@ -40,7 +40,7 @@ function Products({ history }) {
         selectProduct({});
         context.startProcess();
         await deleteProduct(product).finally(() => context.endProcess());
-        window.location.reload();
+        history.push('/complete', { to: '/products' });
       });
   }
 
@@ -52,8 +52,7 @@ function Products({ history }) {
     } else {
       await addProduct(product).finally(() => context.endProcess());
     }
-    handleCancelProduct();
-    window.location.reload();
+    history.push('/complete', { to: '/products' });
   }
 
   function handleSelectProduct(selectedProduct) {

@@ -8,6 +8,7 @@ import { withRouter } from 'react-router';
 import useDocumentTitle from './hooks/useDocumentTitle'
 import { HeaderBar, NavBar, NotFound, Progress } from './components';
 import About from './About';
+import Complete from './Complete';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +67,7 @@ const App = ({ history }) => {
                 <Redirect from="/" exact to="/products" />
                 <Route path="/products" component={Products} />
                 <Route path="/about" component={About} />
+                <Route path="/complete" component={Complete} />
                 <Route exact path="**" component={NotFound} />
               </Switch>
             </Suspense>
