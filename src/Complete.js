@@ -8,7 +8,7 @@ const Complete = ({ history }) => {
     history.push(to);
   }, [history]);
 
-  return <Progress processing={true} />
+  return <Progress processing={true}>callback</Progress>
 }
 
 export default withRouter(Complete);
