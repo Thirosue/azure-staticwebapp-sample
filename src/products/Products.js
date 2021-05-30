@@ -1,20 +1,12 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { head } from 'lodash';
 
 import useProducts from '../hooks/useProducts';
 import ProductDetail from './ProductDetail';
 import ProductList from './ProductList';
 
 const captains = console;
-
-const selectedProduct = {
-  id: 10,
-  name: 'Strawberries',
-  description: '16oz package of fresh organic strawberries',
-  quantity: 1,
-};
 
 function Products({ history }) {
   const {
@@ -32,22 +24,24 @@ function Products({ history }) {
 
   function handleCancelProduct() {
     history.push('/products');
-    selectProduct(null);
+    selectProduct({});
   }
 
   async function handleDeleteProduct(product) {
-    selectProduct(null);
-    await deleteProduct(product)
+    selectProduct({});
+    await deleteProduct(product);
+    window.location.reload();
   }
 
-  function handleSaveProduct(product) {
+  async function handleSaveProduct(product) {
     if (product.id) {
       captains.log(product);
-      updateProduct(product);
+      await updateProduct(product);
     } else {
-      addProduct(product);
+      await addProduct(product);
     }
     handleCancelProduct();
+    window.location.reload();
   }
 
   function handleSelectProduct(selectedProduct) {

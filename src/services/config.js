@@ -1,3 +1,3 @@
-const API = process.env.REACT_APP_API || 'api';
+const API = `${location.origin}/api`;
 
 export { API as default };
