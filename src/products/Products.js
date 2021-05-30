@@ -8,6 +8,8 @@ import useProducts from '../hooks/useProducts';
 import ProductDetail from './ProductDetail';
 import ProductList from './ProductList';
 
+import { Progress } from '../components';
+
 const captains = console;
 
 function Products({ history }) {
@@ -37,8 +39,7 @@ function Products({ history }) {
       .then(async () => {
         selectProduct({});
         context.startProcess();
-        await deleteProduct(product);
-        context.endProcess();
+        await deleteProduct(product).finally(() => context.endProcess());
         window.location.reload();
       });
   }
@@ -47,12 +48,11 @@ function Products({ history }) {
     context.startProcess();
     if (product.id) {
       captains.log(product);
-      await updateProduct(product);
+      await updateProduct(product).finally(() => context.endProcess());
     } else {
-      await addProduct(product);
+      await addProduct(product).finally(() => context.endProcess());
     }
     handleCancelProduct();
-    context.endProcess();
     window.location.reload();
   }
 
@@ -63,38 +63,37 @@ function Products({ history }) {
 
   return (
     <>
-      <div className="columns is-multiline is-variable">
-        <div className="column is-8">
-          <Switch>
-            <Route
-              exact
-              path="/products"
-              component={() => (
-                <ProductList
-                  products={products}
-                  addNewProduct={addNewProduct}
-                  selectedProduct={product}
-                  handleSelectProduct={handleSelectProduct}
-                  handleDeleteProduct={handleDeleteProduct}
+      <Progress processing={products === null} />
+      {products !== null &&
+        <Switch>
+          <Route
+            exact
+            path="/products"
+            component={() => (
+              <ProductList
+                products={products}
+                addNewProduct={addNewProduct}
+                selectedProduct={product}
+                handleSelectProduct={handleSelectProduct}
+                handleDeleteProduct={handleDeleteProduct}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/products/:id"
+            component={() => {
+              return (
+                <ProductDetail
+                  product={product}
+                  handleCancelProduct={handleCancelProduct}
+                  handleSaveProduct={handleSaveProduct}
                 />
-              )}
-            />
-            <Route
-              exact
-              path="/products/:id"
-              component={() => {
-                return (
-                  <ProductDetail
-                    product={product}
-                    handleCancelProduct={handleCancelProduct}
-                    handleSaveProduct={handleSaveProduct}
-                  />
-                );
-              }}
-            />
-          </Switch>
-        </div>
-      </div>
+              );
+            }}
+          />
+        </Switch>
+      }
     </>
   );
 }

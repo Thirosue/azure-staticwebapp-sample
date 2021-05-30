@@ -9,7 +9,7 @@ import {
 
 // Products の state と更新ロジックを持つフック
 const useProducts = () => {
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState(null);
 
     // このカスタムフックを利用しているコンポーネントがマウントされたら Products を取得する。
     useEffect(() => {
@@ -21,17 +21,9 @@ const useProducts = () => {
         fetchAll()
     }, []);
 
-    const addProduct = async (product) => {
-        await addProductApi(product);
-    }
-
-    const updateProduct = async (product) => {
-        await updateProductApi(product);
-    }
-
-    const deleteProduct = async (product) => {
-        await deleteProductApi(product);
-    }
+    const addProduct = (product) => addProductApi(product);
+    const updateProduct = (product) => updateProductApi(product);
+    const deleteProduct = (product) => deleteProductApi(product);
 
     return { products, addProduct, updateProduct, deleteProduct };
 };
