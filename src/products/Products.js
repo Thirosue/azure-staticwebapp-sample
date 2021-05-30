@@ -1,7 +1,9 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+import GlobalContext from '../context/global-context';
+import useConfirm from '../hooks/useConfirm';
 import useProducts from '../hooks/useProducts';
 import ProductDetail from './ProductDetail';
 import ProductList from './ProductList';
@@ -9,13 +11,16 @@ import ProductList from './ProductList';
 const captains = console;
 
 function Products({ history }) {
+  const confirm = useConfirm();
+  const context = React.useContext(GlobalContext);
+
   const {
     products,
     addProduct,
     updateProduct,
     deleteProduct,
   } = useProducts();
-  const [product, selectProduct] = useState({});
+  const [product, selectProduct] = React.useState({});
 
   function addNewProduct() {
     selectProduct({});
@@ -28,12 +33,18 @@ function Products({ history }) {
   }
 
   async function handleDeleteProduct(product) {
-    selectProduct({});
-    await deleteProduct(product);
-    window.location.reload();
+    confirm({ description: '本当に削除しますか?' })
+      .then(async () => {
+        selectProduct({});
+        context.startProcess();
+        await deleteProduct(product);
+        context.endProcess();
+        window.location.reload();
+      });
   }
 
   async function handleSaveProduct(product) {
+    context.startProcess();
     if (product.id) {
       captains.log(product);
       await updateProduct(product);
@@ -41,6 +52,7 @@ function Products({ history }) {
       await addProduct(product);
     }
     handleCancelProduct();
+    context.endProcess();
     window.location.reload();
   }
 

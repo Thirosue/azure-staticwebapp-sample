@@ -1,18 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider } from '@material-ui/core'
+import { SnackbarProvider } from 'notistack';
+import { ThemeProvider } from '@material-ui/core';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import theme from './theme'
+import theme from './theme';
+import { GlobalStateProvider } from './context/globalState';
+import ConfirmProvider from './context/confirmProvider'
 
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </ThemeProvider>,
+  <SnackbarProvider maxSnack={3}>
+    <ThemeProvider theme={theme}>
+      <GlobalStateProvider>
+        <ConfirmProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ConfirmProvider>
+      </GlobalStateProvider>
+    </ThemeProvider>
+  </SnackbarProvider>,
 
   document.getElementById('root')
 );
