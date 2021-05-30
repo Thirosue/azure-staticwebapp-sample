@@ -97,10 +97,9 @@ function ProductList({
     history.push(`/products/${id}`);
   }
 
-  function deleteProduct(e) {
-    console.log('delete target: ', e)
-    // const product = getSelectedProduct(e);
-    // handleDeleteProduct(product);
+  async function deleteProduct() {
+    const product = getSelectedProduct(head(selected));
+    await handleDeleteProduct(product);
   }
 
   function getSelectedProduct(id) {

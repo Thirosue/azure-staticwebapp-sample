@@ -34,13 +34,15 @@ function ProductDetail({
   const { register, handleSubmit, errors } = useForm();
 
   useEffect(() => {
+    console.log(product)
     if (!product) {
       history.push('/products'); // no product, bail out of Details
     }
   }, [product, history]);
 
-  function handleSave(data) {
-    console.log(data)
+  async function handleSave(data) {
+    const chgProduct = { ...data, id: product.id || null };
+    await handleSaveProduct(chgProduct);
   }
 
   return (
@@ -118,7 +120,7 @@ function ProductDetail({
               <Button
                 variant="contained"
                 className={classes.button}
-                onClick={handleSubmit(handleCancelProduct)}
+                onClick={handleCancelProduct}
               >
                 Cancel
               </Button>

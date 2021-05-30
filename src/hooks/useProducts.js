@@ -21,16 +21,19 @@ const useProducts = () => {
         fetchAll()
     }, []);
 
-    const add = async () => {
+    const addProduct = async (product) => {
+        await addProductApi(product);
     }
 
-    const update = async () => {
+    const updateProduct = async (product) => {
+        await updateProductApi(product);
     }
 
-    const remove = async () => {
+    const deleteProduct = async (product) => {
+        await deleteProductApi(product);
     }
 
-    return { products, add, update, remove };
+    return { products, addProduct, updateProduct, deleteProduct };
 };
 
 export default useProducts;

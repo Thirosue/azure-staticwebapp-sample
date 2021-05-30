@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { head } from 'lodash';
 
 import useProducts from '../hooks/useProducts';
 import ProductDetail from './ProductDetail';
@@ -16,7 +17,12 @@ const selectedProduct = {
 };
 
 function Products({ history }) {
-  const { products } = useProducts();
+  const {
+    products,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+  } = useProducts();
   const [product, selectProduct] = useState({});
 
   function addNewProduct() {
@@ -27,17 +33,15 @@ function Products({ history }) {
   function handleCancelProduct() {
     history.push('/products');
     selectProduct(null);
-    // setProductToDelete(null);
   }
 
-  function handleDeleteProduct(product) {
+  async function handleDeleteProduct(product) {
     selectProduct(null);
-    setProductToDelete(product);
-    setShowModal(true);
+    await deleteProduct(product)
   }
 
   function handleSaveProduct(product) {
-    if (selectedProduct && selectedProduct.name) {
+    if (product.id) {
       captains.log(product);
       updateProduct(product);
     } else {
