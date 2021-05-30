@@ -1,8 +1,11 @@
+/* eslint-disable */
 import React, { lazy, Suspense } from 'react';
 import { makeStyles } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline'
+import { Helmet } from 'react-helmet';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { withRouter } from 'react-router';
+import useDocumentTitle from './hooks/useDocumentTitle'
 import { HeaderBar, NavBar, NotFound } from './components';
 import About from './About';
 
@@ -38,10 +41,22 @@ const Products = withRouter(
   lazy(() => import(/* webpackChunkName: "products" */ './products/Products'))
 );
 
-const App = () => {
+const App = ({ history }) => {
   const classes = useStyles();
+  const title = useDocumentTitle(history.location);
 
-  return (
+  React.useEffect(() => {
+    console.log(history.location)
+  }, [history])
+
+  return <>
+    <Helmet>
+      <meta
+        name="viewport"
+        content="minimum-scale=1, initial-scale=1, width=device-width"
+      />
+      <title>{title}</title>
+    </Helmet>
     <div className={classes.root}>
       <HeaderBar />
       <NavBar />
@@ -62,7 +77,7 @@ const App = () => {
         </div>
       </div>
     </div>
-  );
+  </>;
 }
 
-export default App;
+export default withRouter(App);
