@@ -13,7 +13,7 @@ const useDocumentTitle = (location) => {
     useEffect(() => {
         const pathname = location.pathname;
         const title = _.head(titleMapping.filter(mapping => _.startsWith(pathname, mapping.pathname)))?.title
-        setTitle(`Sample | ${title}`)
+        setTitle(`${title || 'Page not found'} - Sample`)
     }, [location]);
 
     return title
