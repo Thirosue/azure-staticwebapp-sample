@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import { head } from 'lodash';
+import { useForm } from 'react-hook-form';
 import {
   Table,
   TableBody,
@@ -12,14 +13,34 @@ import {
   TableRow,
   Paper,
   Checkbox,
+  Box,
+  Card,
+  CardContent,
+  Button,
+  Grid,
+  TextField,
+  Toolbar,
+  Typography,
+  Tooltip
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import SearchIcon from '@material-ui/icons/Search';
 import {
   TablePaginationActions,
   EnhancedTableToolbar,
   EnhancedTableHead,
 } from '../components';
 
+const captains = console;
+
 const useStyles = makeStyles((theme) => ({
+  headerRoot: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+  },
+  headerTitle: {
+    flex: '1 1 100%',
+  },
   pageTitle: {
     flexGrow: 1,
     marginBottom: '0.25rem'
@@ -43,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 750,
-  },
+  }
 }));
 
 const headCells = [
@@ -60,6 +81,8 @@ function ProductList({
   history,
 }) {
   const classes = useStyles();
+  const { register, handleSubmit } = useForm();
+
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('items');
   const [selected, setSelected] = React.useState([]);
@@ -90,20 +113,18 @@ function ProductList({
     setSelected([]);
   };
 
-  function selectProduct(id) {
+  const selectProduct = (id) => {
     const product = getSelectedProduct(id);
     handleSelectProduct(product);
     history.push(`/products/${id}`);
   }
 
-  async function deleteProduct() {
+  const deleteProduct = async () => {
     const product = getSelectedProduct(head(selected));
     await handleDeleteProduct(product);
   }
 
-  function getSelectedProduct(id) {
-    return head(products.filter(product => product.id === id));
-  }
+  const getSelectedProduct = (id) => head(products.filter(product => product.id === id));
 
   const handleClick = (_, id) => {
     const selectedIndex = selected.indexOf(id);
@@ -125,16 +146,87 @@ function ProductList({
     setSelected(newSelected);
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const search = (data) => {
+    captains.log(data);
+  };
 
+  const isSelected = (id) => selected.indexOf(id) !== -1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage);
 
   return (
     <div>
       <div className={classes.root}>
+        <Toolbar
+          className={classes.headerRoot}
+        >
+          <Typography className={classes.headerTitle} variant="h5" id="tableTitle" component="div">
+            商品一覧
+          </Typography>
+          <Tooltip title="Add">
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              startIcon={<AddIcon />}
+              onClick={addNewProduct}
+            >
+              Add
+            </Button>
+          </Tooltip>
+        </Toolbar>
+        <form
+          autoComplete="off"
+          noValidate
+        >
+          <Card>
+            <CardContent>
+              <Grid
+                container
+                spacing={2}
+              >
+                <Grid item xs={6} md={6}>
+                  <TextField
+                    id="name"
+                    name="name"
+                    label="商品名"
+                    fullWidth
+                    inputRef={register}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={6} md={6}>
+                  <TextField
+                    id="description"
+                    name="description"
+                    label="商品説明"
+                    fullWidth
+                    inputRef={register}
+                    variant="outlined"
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              p={2}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                startIcon={<SearchIcon />}
+                onClick={handleSubmit(search)}
+              >
+                Search
+              </Button>
+            </Box>
+          </Card>
+        </form>
+        <Box mb='1rem' />
         <Paper className={classes.paper}>
           <EnhancedTableToolbar
-            header={'Products'}
+            header={'検索結果'}
             selected={selected}
             addItems={addNewProduct}
             deleteItems={deleteProduct}

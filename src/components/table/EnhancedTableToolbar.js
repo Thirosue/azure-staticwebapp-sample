@@ -6,9 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useStyles();
-  const { header, selected, addItems, deleteItems } = props;
+  const { header, selected, deleteItems } = props;
 
   return (
     <Toolbar
@@ -62,19 +60,6 @@ const EnhancedTableToolbar = (props) => {
           <IconButton onClick={() => deleteItems(selected)} aria-label="delete">
             <DeleteIcon />
           </IconButton>
-        </Tooltip>
-      )}
-      {selected.length === 0 && addItems && (
-        <Tooltip title="Add">
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            startIcon={<AddIcon />}
-            onClick={addItems}
-          >
-            Add
-          </Button>
         </Tooltip>
       )}
     </Toolbar>
