@@ -23,8 +23,10 @@ import {
   Typography,
   Tooltip
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import SearchIcon from '@material-ui/icons/Search';
+import {
+  Add as AddIcon,
+  Search as SearchIcon
+} from '@material-ui/icons';
 import {
   TablePaginationActions,
   EnhancedTableToolbar,
