@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { lazy, Suspense } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Helmet } from 'react-helmet';

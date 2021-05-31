@@ -1,4 +1,3 @@
-/* eslint-disable */
 import axios from 'axios';
 import { parseItem, parseList } from '../utils/action-utils';
 import API from './config';

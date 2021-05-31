@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { withRouter } from 'react-router';
 import { makeStyles } from '@material-ui/core/styles';

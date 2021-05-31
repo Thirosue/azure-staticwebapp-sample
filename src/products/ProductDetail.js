@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import {
@@ -13,7 +12,9 @@ import {
   Button,
 } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
-import Submit from "../components/Submit";
+import Submit from '../components/Submit';
+
+const captains = console;
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -35,7 +36,7 @@ function ProductDetail({
   const { register, handleSubmit, errors } = useForm();
 
   useEffect(() => {
-    console.log(product)
+    captains.log(product);
     if (!product) {
       history.push('/products'); // no product, bail out of Details
     }
