@@ -13,6 +13,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
+import Submit from "../components/Submit";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -126,14 +127,12 @@ function ProductDetail({
               </Button>
             </span>
             <span>
-              <Button
-                variant="contained"
-                color="primary"
+              <Submit
                 className={classes.button}
                 onClick={handleSubmit(handleSave)}
               >
                 Save
-              </Button>
+              </Submit>
             </span>
           </Box>
         </Card>

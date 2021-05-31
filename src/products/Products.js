@@ -37,7 +37,6 @@ function Products({ history }) {
   async function handleDeleteProduct(product) {
     confirm({ description: '本当に削除しますか?' })
       .then(async () => {
-        selectProduct({});
         context.startProcess();
         await deleteProduct(product).finally(() => context.endProcess());
         history.push('/complete', { to: '/products' });
@@ -46,12 +45,8 @@ function Products({ history }) {
 
   async function handleSaveProduct(product) {
     context.startProcess();
-    if (product.id) {
-      captains.log(product);
-      await updateProduct(product).finally(() => context.endProcess());
-    } else {
-      await addProduct(product).finally(() => context.endProcess());
-    }
+    const updateFunc = product.id ? updateProduct : addProduct;
+    await updateFunc(product).finally(() => context.endProcess());
     history.push('/complete', { to: '/products' });
   }
 
