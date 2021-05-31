@@ -12,7 +12,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
-import Submit from '../components/Submit';
+import { Submit } from '../components';
 
 const captains = console;
 
