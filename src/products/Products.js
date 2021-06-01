@@ -7,8 +7,6 @@ import useProducts from '../hooks/useProducts';
 import ProductDetail from './ProductDetail';
 import ProductList from './ProductList';
 
-import { Progress } from '../components';
-
 const captains = console;
 
 function Products({ history }) {
@@ -16,7 +14,7 @@ function Products({ history }) {
   const context = React.useContext(GlobalContext);
 
   const {
-    products,
+    searchProduct,
     addProduct,
     updateProduct,
     deleteProduct,
@@ -55,39 +53,34 @@ function Products({ history }) {
   }
 
   return (
-    <>
-      <Progress processing={products === null} />
-      {products !== null &&
-        <Switch>
-          <Route
-            exact
-            path="/products"
-            component={() => (
-              <ProductList
-                products={products}
-                addNewProduct={addNewProduct}
-                selectedProduct={product}
-                handleSelectProduct={handleSelectProduct}
-                handleDeleteProduct={handleDeleteProduct}
-              />
-            )}
+    <Switch>
+      <Route
+        exact
+        path="/products"
+        component={() => (
+          <ProductList
+            addNewProduct={addNewProduct}
+            searchProduct={searchProduct}
+            selectedProduct={product}
+            handleSelectProduct={handleSelectProduct}
+            handleDeleteProduct={handleDeleteProduct}
           />
-          <Route
-            exact
-            path="/products/:id"
-            component={() => {
-              return (
-                <ProductDetail
-                  product={product}
-                  handleCancelProduct={handleCancelProduct}
-                  handleSaveProduct={handleSaveProduct}
-                />
-              );
-            }}
-          />
-        </Switch>
-      }
-    </>
+        )}
+      />
+      <Route
+        exact
+        path="/products/:id"
+        component={() => {
+          return (
+            <ProductDetail
+              product={product}
+              handleCancelProduct={handleCancelProduct}
+              handleSaveProduct={handleSaveProduct}
+            />
+          );
+        }}
+      />
+    </Switch>
   );
 }
 

@@ -1,22 +1,40 @@
 const data = {
   products: [
     {
-      id: 10,
+      id: 1,
       name: 'Strawberries',
       description: '16oz package of fresh organic strawberries',
       quantity: 1,
     },
     {
-      id: 20,
+      id: 2,
       name: 'Sliced bread',
       description: 'Loaf of fresh sliced wheat bread',
-      quantity: 1,
+      quantity: 2,
     },
     {
-      id: 30,
+      id: 3,
       name: 'Apples',
       description: 'Bag of 7 fresh McIntosh apples',
-      quantity: 1,
+      quantity: 3,
+    },
+    {
+      id: 4,
+      name: 'Item4',
+      description: 'no.4',
+      quantity: 4,
+    },
+    {
+      id: 5,
+      name: 'Item5',
+      description: 'no.5',
+      quantity: 5,
+    },
+    {
+      id: 6,
+      name: 'Item6',
+      description: 'no.6',
+      quantity: 6,
     },
   ],
 };

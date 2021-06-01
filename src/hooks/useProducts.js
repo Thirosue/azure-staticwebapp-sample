@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
     addProductApi,
     deleteProductApi,
@@ -8,23 +7,12 @@ import {
 
 // Products の state と更新ロジックを持つフック
 const useProducts = () => {
-    const [products, setProducts] = useState(null);
-
-    // このカスタムフックを利用しているコンポーネントがマウントされたら Products を取得する。
-    useEffect(() => {
-        const fetchAll = async () => {
-            const response = await loadProductsApi();
-            setProducts(response)
-        }
-
-        fetchAll()
-    }, []);
-
     const addProduct = (product) => addProductApi(product);
     const updateProduct = (product) => updateProductApi(product);
     const deleteProduct = (product) => deleteProductApi(product);
+    const searchProduct = (data, page, rows) => loadProductsApi({ ...data, page, rows });
 
-    return { products, addProduct, updateProduct, deleteProduct };
+    return { searchProduct, addProduct, updateProduct, deleteProduct };
 };
 
 export default useProducts;
