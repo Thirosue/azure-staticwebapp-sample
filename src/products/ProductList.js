@@ -86,6 +86,7 @@ function ProductList({
   const classes = useStyles();
   const { register, handleSubmit } = useForm();
 
+  const [form, setForm] = React.useState({});
   const [rows, setRows] = React.useState([]);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('items');
@@ -95,12 +96,16 @@ function ProductList({
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [searched, setSearched] = React.useState(false);
 
-  const handleChangePage = (_, newPage) => {
+  const handleChangePage = async (_, newPage) => {
+    const results = await searchProduct(form, newPage, rowsPerPage);
     setPage(newPage);
+    setCount(results.count);
+    setRows(results.data);
+    setSearched(true);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(parseInt(event.target.value));
     setPage(0);
   };
 
@@ -155,13 +160,14 @@ function ProductList({
   const search = async (data) => {
     captains.log(data);
     const results = await searchProduct(data, page, rowsPerPage);
+    setForm(data);
     setCount(results.count);
     setRows(results.data);
     setSearched(true);
   };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - rows.length;
 
   return (
     <div>
@@ -248,7 +254,7 @@ function ProductList({
             <Box mb='1rem' />
             <Paper className={classes.paper}>
               <EnhancedTableToolbar
-                header={'検索結果'}
+                header={'検索結果一覧'}
                 selected={selected}
                 addItems={addNewProduct}
                 deleteItems={deleteProduct}
@@ -293,7 +299,6 @@ function ProductList({
                         </TableRow>
                       );
                     })}
-
                     {emptyRows > 0 && (
                       <TableRow style={{ height: 53 * emptyRows }}>
                         <TableCell colSpan={6} />

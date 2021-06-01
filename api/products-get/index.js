@@ -4,10 +4,11 @@ module.exports = async function (context, req) {
     try {
         const { name, description, page, rows } = req.query;
         const products = data.getProducts();
-        console.log(name, description, page, rows);
+        const start = rows * page;
+        console.log(name, description, start, page, rows);
         const results = {
             count: products.length,
-            data: products.slice(rows * page, rows),
+            data: products.slice(start, start + rows),
         };
         context.res.status(200).json(results);
     } catch (error) {
