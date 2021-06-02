@@ -1,10 +1,11 @@
 /* eslint-disable */
 import React from 'react';
 import { withRouter } from 'react-router';
-import { makeStyles } from '@material-ui/core/styles';
-import { head } from 'lodash';
 import { useForm } from 'react-hook-form';
+import querystring from 'querystring';
+import { head } from 'lodash';
 import {
+  makeStyles,
   Table,
   TableBody,
   TableCell,
@@ -32,7 +33,9 @@ import {
   TablePaginationActions,
   EnhancedTableToolbar,
   EnhancedTableHead,
+  Progress,
 } from '../components';
+import Const from '../const';
 
 const captains = console;
 
@@ -76,6 +79,22 @@ const headCells = [
   { id: 'quantity', numeric: true, disablePadding: false, label: 'Quantity' },
 ];
 
+const parseQuery = (history) => {
+  const { search } = history.location;
+  const index = search.lastIndexOf('?');
+  if (index < 0) {
+    return {
+      name: '',
+      description: '',
+      page: 0,
+      rows: Const.defaultPageSize,
+    };
+  } else {
+    const searchParam = search.substring(index + 1);
+    return querystring.parse(searchParam);
+  }
+};
+
 function ProductList({
   addNewProduct,
   searchProduct,
@@ -86,6 +105,7 @@ function ProductList({
   const classes = useStyles();
   const { register, handleSubmit } = useForm();
 
+  const [mounted, setMounted] = React.useState(false);
   const [form, setForm] = React.useState({});
   const [rows, setRows] = React.useState([]);
   const [order, setOrder] = React.useState('asc');
@@ -93,19 +113,46 @@ function ProductList({
   const [selected, setSelected] = React.useState([]);
   const [count, setCount] = React.useState(0); // Total Count
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(Const.defaultPageSize);
   const [searched, setSearched] = React.useState(false);
 
+  React.useEffect(() => {
+    const query = parseQuery(history);
+    const { name, description, page, rows } = query;
+    setForm({
+      name,
+      description,
+    });
+    setPage(parseInt(page) ? parseInt(page) : 0);
+    setRowsPerPage(parseInt(rows) ? parseInt(rows) : Const.defaultPageSize);
+    setMounted(true);
+
+    const search = async () => {
+      captains.log('do search... ', query);
+      const results = await searchProduct(query);
+      setCount(results.count);
+      setRows(results.data);
+      setSearched(true);
+    }
+
+    if (history.location.search) {
+      search();
+    }
+  }, [history.location.search]);
+
+  const pushState = (query) =>
+    history.push(`/products?${querystring.stringify(query)}`);
+
   const handleChangePage = async (_, newPage) => {
-    const results = await searchProduct(form, newPage, rowsPerPage);
-    setPage(newPage);
-    setCount(results.count);
-    setRows(results.data);
-    setSearched(true);
+    const query = parseQuery(history);
+    pushState({ ...query, page: newPage });
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value));
+    const query = parseQuery(history);
+    const rowsPerPage = parseInt(event.target.value);
+    pushState({ ...query, page: 0, rows: rowsPerPage });
+    setRowsPerPage(rowsPerPage);
     setPage(0);
   };
 
@@ -157,13 +204,8 @@ function ProductList({
     setSelected(newSelected);
   };
 
-  const search = async (data) => {
-    captains.log(data);
-    const results = await searchProduct(data, page, rowsPerPage);
-    setForm(data);
-    setCount(results.count);
-    setRows(results.data);
-    setSearched(true);
+  const search = (data) => {
+    pushState({ ...data, page, rows: rowsPerPage });
   };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
@@ -205,6 +247,7 @@ function ProductList({
                     id="name"
                     name="name"
                     label="商品名"
+                    defaultValue={form.name}
                     fullWidth
                     inputRef={register}
                     variant="outlined"
@@ -215,6 +258,7 @@ function ProductList({
                     id="description"
                     name="description"
                     label="商品説明"
+                    defaultValue={form.description}
                     fullWidth
                     inputRef={register}
                     variant="outlined"

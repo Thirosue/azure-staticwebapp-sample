@@ -10,7 +10,7 @@ const useProducts = () => {
     const addProduct = (product) => addProductApi(product);
     const updateProduct = (product) => updateProductApi(product);
     const deleteProduct = (product) => deleteProductApi(product);
-    const searchProduct = (data, page, rows) => loadProductsApi({ ...data, page, rows });
+    const searchProduct = (query) => loadProductsApi(query);
 
     return { searchProduct, addProduct, updateProduct, deleteProduct };
 };
