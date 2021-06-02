@@ -27,8 +27,8 @@ function Products({ history }) {
   }
 
   function handleCancelProduct() {
-    history.push('/products');
     selectProduct({});
+    history.goBack();
   }
 
   async function handleDeleteProduct(product, to) {
