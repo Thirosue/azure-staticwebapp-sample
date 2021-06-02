@@ -106,6 +106,7 @@ function ProductList({
   const { register, handleSubmit } = useForm();
 
   const [mounted, setMounted] = React.useState(false);
+  const [searched, setSearched] = React.useState(false);
   const [form, setForm] = React.useState({});
   const [rows, setRows] = React.useState([]);
   const [order, setOrder] = React.useState('asc');
@@ -114,7 +115,6 @@ function ProductList({
   const [count, setCount] = React.useState(0); // Total Count
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(Const.defaultPageSize);
-  const [searched, setSearched] = React.useState(false);
 
   React.useEffect(() => {
     const query = parseQuery(history);
@@ -213,7 +213,7 @@ function ProductList({
   const emptyRows = rowsPerPage - rows.length;
 
   return (<>
-    {!mounted ? <Progress processing={true} /> : (
+    {!mounted ? <Progress processing={true} /> :
       <div>
         <div className={classes.root}>
           <Toolbar
@@ -286,16 +286,14 @@ function ProductList({
             </Card>
           </form>
           {/* No Results */}
-          {searched && 0 === rows.length && (
+          {searched && 0 === rows.length ?
             <>
               <Box mb='1rem' />
               <Typography variant="subtitle1" id="noResults" component="div">
                 検索結果がありません。
               </Typography>
             </>
-          )}
-          {/* else */}
-          {searched && 0 < rows.length && (
+            :
             <>
               <Box mb='1rem' />
               <Paper className={classes.paper}>
@@ -372,10 +370,10 @@ function ProductList({
                 </TableContainer>
               </Paper>
             </>
-          )}
+          }
         </div>
       </div>
-    )}
+    }
   </>);
 }
 
