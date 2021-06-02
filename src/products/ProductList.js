@@ -219,7 +219,7 @@ function ProductList({
           >
             <Typography className={classes.headerTitle} variant="h5" id="tableTitle" component="div">
               商品一覧
-          </Typography>
+            </Typography>
             <Tooltip title="Add">
               <Button
                 variant="contained"
@@ -289,7 +289,7 @@ function ProductList({
               <Box mb='1rem' />
               <Typography variant="subtitle1" id="noResults" component="div">
                 検索結果がありません。
-            </Typography>
+              </Typography>
             </>
           )}
           {/* else */}
