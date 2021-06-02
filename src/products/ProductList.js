@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { withRouter } from 'react-router';
 import { useForm } from 'react-hook-form';
@@ -69,13 +70,13 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 750,
-  }
+  },
 }));
 
 const headCells = [
-  { id: 'items', numeric: false, disablePadding: true, label: 'Items' },
+  { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'description', numeric: false, disablePadding: true, label: 'Description' },
-  { id: 'quantity', numeric: true, disablePadding: false, label: 'Quantity' },
+  { id: 'quantity', numeric: true, sortDisable: true, disablePadding: false, label: 'Quantity' },
 ];
 
 const parseQuery = (history) => {
@@ -108,7 +109,7 @@ function ProductList({
   const [form, setForm] = React.useState({});
   const [rows, setRows] = React.useState([]);
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('items');
+  const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
   const [count, setCount] = React.useState(0); // Total Count
   const [page, setPage] = React.useState(0);
@@ -117,13 +118,15 @@ function ProductList({
 
   React.useEffect(() => {
     const query = parseQuery(history);
-    const { name, description, page, rows } = query;
+    const { name, description, page, rows, order, orderBy } = query;
     setForm({
       name,
       description,
     });
     setPage(parseInt(page) ? parseInt(page) : 0);
     setRowsPerPage(parseInt(rows) ? parseInt(rows) : Const.defaultPageSize);
+    setOrder(order);
+    setOrderBy(orderBy);
     setMounted(true);
 
     const search = async () => {
@@ -151,14 +154,12 @@ function ProductList({
     const query = parseQuery(history);
     const rowsPerPage = parseInt(event.target.value);
     pushState({ ...query, page: 0, rows: rowsPerPage });
-    setRowsPerPage(rowsPerPage);
-    setPage(0);
   };
 
   const handleRequestSort = (_, property) => {
+    const query = parseQuery(history);
     const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+    pushState({ ...query, page: 0, order: isAsc ? 'desc' : 'asc', orderBy: property });
   };
 
   const handleSelectAllClick = (event) => {
@@ -335,7 +336,7 @@ function ProductList({
                                 inputProps={{ 'aria-labelledby': labelId }}
                               />
                             </TableCell>
-                            <TableCell onClick={() => selectProduct(row.id)} padding="none">
+                            <TableCell style={{ width: 250 }} onClick={() => selectProduct(row.id)} padding="none">
                               {row.name}
                             </TableCell>
                             <TableCell onClick={() => selectProduct(row.id)} padding="none">{row.description}</TableCell>

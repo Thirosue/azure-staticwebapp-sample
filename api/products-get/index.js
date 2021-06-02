@@ -1,9 +1,16 @@
+const _ = require('lodash');
+
 const data = require('../shared/product-data');
 
 module.exports = async function (context, req) {
     try {
-        const { name, description, page, rows } = req.query;
-        let products = data.getProducts();
+        const { name, description, page, rows, order, orderBy } = req.query;
+        let products = _.orderBy(data.getProducts(), 'id', 'asc');
+        if (order) {
+            if (['name', 'description'].includes(orderBy)) {
+                products = _.orderBy(products, orderBy, order);
+            }
+        }
         if (name) {
             products = products.filter((item) => -1 !== item.name.indexOf(name));
         }
@@ -11,7 +18,7 @@ module.exports = async function (context, req) {
             products = products.filter((item) => -1 !== item.description.indexOf(description));
         }
         const start = rows * page;
-        console.log(name, description, start, page, rows);
+        console.log(name, description, start, page, rows, order, orderBy);
         const results = {
             count: products.length,
             data: products.slice(start, start + parseInt(rows)),

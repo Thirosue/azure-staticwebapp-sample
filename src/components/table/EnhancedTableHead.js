@@ -30,13 +30,19 @@ const EnhancedTableHead = (props) => {
                         padding={headCell.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={createSortHandler(headCell.id)}
-                        >
-                            {headCell.label}
-                        </TableSortLabel>
+                        {headCell.sortDisable ?
+                            <>
+                                {headCell.label}
+                            </>
+                            :
+                            <TableSortLabel
+                                active={orderBy === headCell.id}
+                                direction={orderBy === headCell.id ? order : 'asc'}
+                                onClick={createSortHandler(headCell.id)}
+                            >
+                                {headCell.label}
+                            </TableSortLabel>
+                        }
                     </TableCell>
                 ))}
             </TableRow>
