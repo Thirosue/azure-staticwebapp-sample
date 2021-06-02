@@ -354,12 +354,11 @@ function ProductList({
                       <TableRow>
                         <TablePagination
                           rowsPerPageOptions={[5, 10, 50, { label: 'All', value: -1 }]}
-                          colSpan={3}
                           count={count}
                           rowsPerPage={rowsPerPage}
                           page={page}
                           SelectProps={{
-                            inputProps: { 'aria-label': 'rows per page' },
+                            inputProps: { 'aria-label': 'Rows per page' },
                             native: true,
                           }}
                           onChangePage={handleChangePage}
