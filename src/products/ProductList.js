@@ -178,8 +178,9 @@ function ProductList({
   }
 
   const deleteProduct = async () => {
+    const query = parseQuery(history);
     const product = getSelectedProduct(head(selected));
-    await handleDeleteProduct(product);
+    await handleDeleteProduct(product, `/products?${querystring.stringify(query)}`);
   }
 
   const getSelectedProduct = (id) => head(rows.filter(product => product.id === id));

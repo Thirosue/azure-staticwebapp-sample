@@ -31,12 +31,12 @@ function Products({ history }) {
     selectProduct({});
   }
 
-  async function handleDeleteProduct(product) {
+  async function handleDeleteProduct(product, to) {
     confirm({ description: '本当に削除しますか?' })
       .then(async () => {
         context.startProcess();
         await deleteProduct(product).finally(() => context.endProcess());
-        history.push('/complete', { to: '/products' });
+        history.push('/complete', { to });
       });
   }
 
