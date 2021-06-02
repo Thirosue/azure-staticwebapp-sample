@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { withRouter } from 'react-router';
 import { useForm } from 'react-hook-form';
@@ -205,176 +204,178 @@ function ProductList({
   };
 
   const search = (data) => {
-    pushState({ ...data, page, rows: rowsPerPage });
+    pushState({ ...data, page: 0, rows: rowsPerPage });
   };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
   const emptyRows = rowsPerPage - rows.length;
 
-  return (
-    <div>
-      <div className={classes.root}>
-        <Toolbar
-          className={classes.headerRoot}
-        >
-          <Typography className={classes.headerTitle} variant="h5" id="tableTitle" component="div">
-            商品一覧
+  return (<>
+    {!mounted ? <Progress processing={true} /> : (
+      <div>
+        <div className={classes.root}>
+          <Toolbar
+            className={classes.headerRoot}
+          >
+            <Typography className={classes.headerTitle} variant="h5" id="tableTitle" component="div">
+              商品一覧
           </Typography>
-          <Tooltip title="Add">
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              startIcon={<AddIcon />}
-              onClick={addNewProduct}
-            >
-              Add
-            </Button>
-          </Tooltip>
-        </Toolbar>
-        <form
-          autoComplete="off"
-          noValidate
-        >
-          <Card>
-            <CardContent>
-              <Grid
-                container
-                spacing={2}
-              >
-                <Grid item xs={6} md={6}>
-                  <TextField
-                    id="name"
-                    name="name"
-                    label="商品名"
-                    defaultValue={form.name}
-                    fullWidth
-                    inputRef={register}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={6} md={6}>
-                  <TextField
-                    id="description"
-                    name="description"
-                    label="商品説明"
-                    defaultValue={form.description}
-                    fullWidth
-                    inputRef={register}
-                    variant="outlined"
-                  />
-                </Grid>
-              </Grid>
-            </CardContent>
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              p={2}
-            >
+            <Tooltip title="Add">
               <Button
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                startIcon={<SearchIcon />}
-                onClick={handleSubmit(search)}
+                startIcon={<AddIcon />}
+                onClick={addNewProduct}
               >
-                Search
+                Add
+            </Button>
+            </Tooltip>
+          </Toolbar>
+          <form
+            autoComplete="off"
+            noValidate
+          >
+            <Card>
+              <CardContent>
+                <Grid
+                  container
+                  spacing={2}
+                >
+                  <Grid item xs={6} md={6}>
+                    <TextField
+                      id="name"
+                      name="name"
+                      label="商品名"
+                      defaultValue={form.name}
+                      fullWidth
+                      inputRef={register}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={6}>
+                    <TextField
+                      id="description"
+                      name="description"
+                      label="商品説明"
+                      defaultValue={form.description}
+                      fullWidth
+                      inputRef={register}
+                      variant="outlined"
+                    />
+                  </Grid>
+                </Grid>
+              </CardContent>
+              <Box
+                display="flex"
+                justifyContent="flex-end"
+                p={2}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  startIcon={<SearchIcon />}
+                  onClick={handleSubmit(search)}
+                >
+                  Search
               </Button>
-            </Box>
-          </Card>
-        </form>
-        {/* No Results */}
-        {searched && 0 === rows.length && (
-          <>
-            <Box mb='1rem' />
-            <Typography variant="subtitle1" id="noResults" component="div">
-              検索結果がありません。
+              </Box>
+            </Card>
+          </form>
+          {/* No Results */}
+          {searched && 0 === rows.length && (
+            <>
+              <Box mb='1rem' />
+              <Typography variant="subtitle1" id="noResults" component="div">
+                検索結果がありません。
             </Typography>
-          </>
-        )}
-        {/* else */}
-        {searched && 0 < rows.length && (
-          <>
-            <Box mb='1rem' />
-            <Paper className={classes.paper}>
-              <EnhancedTableToolbar
-                header={'検索結果一覧'}
-                selected={selected}
-                addItems={addNewProduct}
-                deleteItems={deleteProduct}
-              />
-              <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="custom pagination table">
-                  <EnhancedTableHead
-                    classes={classes}
-                    headCells={headCells}
-                    numSelected={selected.length}
-                    order={order}
-                    orderBy={orderBy}
-                    onSelectAllClick={handleSelectAllClick}
-                    onRequestSort={handleRequestSort}
-                    rowCount={rows.length}
-                  />
-                  <TableBody>
-                    {rows.map((row, index) => {
-                      const isItemSelected = isSelected(row.id);
-                      const labelId = `enhanced-table-checkbox-${index}`;
+            </>
+          )}
+          {/* else */}
+          {searched && 0 < rows.length && (
+            <>
+              <Box mb='1rem' />
+              <Paper className={classes.paper}>
+                <EnhancedTableToolbar
+                  header={'検索結果一覧'}
+                  selected={selected}
+                  addItems={addNewProduct}
+                  deleteItems={deleteProduct}
+                />
+                <TableContainer component={Paper}>
+                  <Table className={classes.table} aria-label="custom pagination table">
+                    <EnhancedTableHead
+                      classes={classes}
+                      headCells={headCells}
+                      numSelected={selected.length}
+                      order={order}
+                      orderBy={orderBy}
+                      onSelectAllClick={handleSelectAllClick}
+                      onRequestSort={handleRequestSort}
+                      rowCount={rows.length}
+                    />
+                    <TableBody>
+                      {rows.map((row, index) => {
+                        const isItemSelected = isSelected(row.id);
+                        const labelId = `enhanced-table-checkbox-${index}`;
 
-                      return (
-                        <TableRow
-                          hover
-                          role="checkbox"
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={row.id}
-                          selected={isItemSelected}
-                        >
-                          <TableCell style={{ width: 60 }} onClick={(event) => handleClick(event, row.id)} padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              inputProps={{ 'aria-labelledby': labelId }}
-                            />
-                          </TableCell>
-                          <TableCell onClick={() => selectProduct(row.id)} padding="none">
-                            {row.name}
-                          </TableCell>
-                          <TableCell onClick={() => selectProduct(row.id)} padding="none">{row.description}</TableCell>
-                          <TableCell align="right">{row.quantity}</TableCell>
+                        return (
+                          <TableRow
+                            hover
+                            role="checkbox"
+                            aria-checked={isItemSelected}
+                            tabIndex={-1}
+                            key={row.id}
+                            selected={isItemSelected}
+                          >
+                            <TableCell style={{ width: 60 }} onClick={(event) => handleClick(event, row.id)} padding="checkbox">
+                              <Checkbox
+                                checked={isItemSelected}
+                                inputProps={{ 'aria-labelledby': labelId }}
+                              />
+                            </TableCell>
+                            <TableCell onClick={() => selectProduct(row.id)} padding="none">
+                              {row.name}
+                            </TableCell>
+                            <TableCell onClick={() => selectProduct(row.id)} padding="none">{row.description}</TableCell>
+                            <TableCell align="right">{row.quantity}</TableCell>
+                          </TableRow>
+                        );
+                      })}
+                      {emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                          <TableCell colSpan={6} />
                         </TableRow>
-                      );
-                    })}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
+                      )}
+                    </TableBody>
+                    <TableFooter>
+                      <TableRow>
+                        <TablePagination
+                          rowsPerPageOptions={[5, 10, 50, { label: 'All', value: -1 }]}
+                          colSpan={3}
+                          count={count}
+                          rowsPerPage={rowsPerPage}
+                          page={page}
+                          SelectProps={{
+                            inputProps: { 'aria-label': 'rows per page' },
+                            native: true,
+                          }}
+                          onChangePage={handleChangePage}
+                          onChangeRowsPerPage={handleChangeRowsPerPage}
+                          ActionsComponent={TablePaginationActions}
+                        />
                       </TableRow>
-                    )}
-                  </TableBody>
-                  <TableFooter>
-                    <TableRow>
-                      <TablePagination
-                        rowsPerPageOptions={[5, 10, 50, { label: 'All', value: -1 }]}
-                        colSpan={3}
-                        count={count}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        SelectProps={{
-                          inputProps: { 'aria-label': 'rows per page' },
-                          native: true,
-                        }}
-                        onChangePage={handleChangePage}
-                        onChangeRowsPerPage={handleChangeRowsPerPage}
-                        ActionsComponent={TablePaginationActions}
-                      />
-                    </TableRow>
-                  </TableFooter>
-                </Table>
-              </TableContainer>
-            </Paper>
-          </>
-        )}
+                    </TableFooter>
+                  </Table>
+                </TableContainer>
+              </Paper>
+            </>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    )}
+  </>);
 }
 
 export default withRouter(ProductList);
