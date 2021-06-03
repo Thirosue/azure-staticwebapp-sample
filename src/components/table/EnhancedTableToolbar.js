@@ -69,7 +69,6 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
   header: PropTypes.string.isRequired,
   selected: PropTypes.array.isRequired,
-  addItems: PropTypes.func.isRequired,
   deleteItems: PropTypes.func.isRequired,
 };
 

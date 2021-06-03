@@ -40,11 +40,11 @@ function Products({ history }) {
       });
   }
 
-  async function handleSaveProduct(product) {
+  async function handleSaveProduct(product, to) {
     context.startProcess();
     const updateFunc = product.id ? updateProduct : addProduct;
     await updateFunc(product).finally(() => context.endProcess());
-    history.push('/complete', { to: '/products' });
+    history.push('/complete', { to });
   }
 
   function handleSelectProduct(selectedProduct) {

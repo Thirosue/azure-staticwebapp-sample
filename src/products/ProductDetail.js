@@ -44,7 +44,7 @@ function ProductDetail({
 
   async function handleSave(data) {
     const chgProduct = { ...data, id: product.id || null };
-    await handleSaveProduct(chgProduct);
+    await handleSaveProduct(chgProduct, history.location?.state?.redirect);
   }
 
   return (

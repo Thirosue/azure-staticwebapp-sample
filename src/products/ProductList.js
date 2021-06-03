@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { withRouter } from 'react-router';
 import { useForm } from 'react-hook-form';
@@ -117,6 +116,7 @@ function ProductList({
   const [rowsPerPage, setRowsPerPage] = React.useState(Const.defaultPageSize);
 
   React.useEffect(() => {
+    captains.log(history.location.search);
     const query = parseQuery(history);
     const { name, description, page, rows, order, orderBy } = query;
     setForm({
@@ -125,8 +125,8 @@ function ProductList({
     });
     setPage(parseInt(page) ? parseInt(page) : 0);
     setRowsPerPage(parseInt(rows) ? parseInt(rows) : Const.defaultPageSize);
-    setOrder(order);
-    setOrderBy(orderBy);
+    setOrder(order ? order : 'asc');
+    setOrderBy(orderBy ? orderBy : 'name');
     setMounted(true);
 
     const search = async () => {
@@ -172,9 +172,10 @@ function ProductList({
   };
 
   const selectProduct = (id) => {
+    const query = parseQuery(history);
     const product = getSelectedProduct(id);
     handleSelectProduct(product);
-    history.push(`/products/${id}`);
+    history.push(`/products/${id}`, { redirect: `/products?${querystring.stringify(query)}` });
   }
 
   const deleteProduct = async () => {
@@ -286,21 +287,22 @@ function ProductList({
             </Card>
           </form>
           {/* No Results */}
-          {searched && 0 === rows.length ?
+          {searched && 0 === rows.length &&
             <>
               <Box mb='1rem' />
               <Typography variant="subtitle1" id="noResults" component="div">
                 検索結果がありません。
               </Typography>
             </>
-            :
+          }
+          {/* else */}
+          {searched && 0 < rows.length &&
             <>
               <Box mb='1rem' />
               <Paper className={classes.paper}>
                 <EnhancedTableToolbar
                   header={'検索結果一覧'}
                   selected={selected}
-                  addItems={addNewProduct}
                   deleteItems={deleteProduct}
                 />
                 <TableContainer component={Paper}>
