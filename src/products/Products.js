@@ -1,5 +1,7 @@
+/* eslint-disable */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 import GlobalContext from '../context/global-context';
 import useConfirm from '../hooks/useConfirm';
@@ -12,6 +14,15 @@ const captains = console;
 function Products({ history }) {
   const confirm = useConfirm();
   const context = React.useContext(GlobalContext);
+  const { enqueueSnackbar } = useSnackbar();
+
+  React.useEffect(() => {
+    const message = history.location.state?.message;
+    if (message) {
+      const variant = message.variant ? message.variant : 'success';
+      enqueueSnackbar(message.value, { variant });
+    }
+  }, [history.location.state]);
 
   const {
     searchProduct,
@@ -32,19 +43,26 @@ function Products({ history }) {
   }
 
   async function handleDeleteProduct(product, to) {
+    const message = {
+      value: '商品の削除が完了しました',
+      variant: 'default',
+    };
     confirm({ description: '本当に削除しますか?' })
       .then(async () => {
         context.startProcess();
         await deleteProduct(product).finally(() => context.endProcess());
-        history.push('/complete', { to });
+        history.push('/complete', { to, message });
       });
   }
 
   async function handleSaveProduct(product, to) {
+    const message = {
+      value: '商品の更新が完了しました'
+    };
     context.startProcess();
     const updateFunc = product.id ? updateProduct : addProduct;
     await updateFunc(product).finally(() => context.endProcess());
-    history.push('/complete', { to });
+    history.push('/complete', { to, message });
   }
 
   function handleSelectProduct(selectedProduct) {

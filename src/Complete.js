@@ -4,8 +4,9 @@ import { Progress } from './components';
 
 const Complete = ({ history }) => {
   React.useEffect(() => {
-    const to = history.location?.state?.to || '/';
-    history.push(to);
+    const to = history.location.state?.to || '/';
+    const message = history.location.state?.message;
+    history.push(to, { message });
   }, [history]);
 
   return <Progress processing={true}>callback</Progress>
