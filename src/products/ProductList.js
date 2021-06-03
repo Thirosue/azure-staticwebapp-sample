@@ -20,12 +20,8 @@ import {
   Button,
   Grid,
   TextField,
-  Toolbar,
-  Typography,
-  Tooltip
 } from '@material-ui/core';
 import {
-  Add as AddIcon,
   Search as SearchIcon
 } from '@material-ui/icons';
 import {
@@ -33,7 +29,9 @@ import {
   EnhancedTableToolbar,
   EnhancedTableHead,
   Progress,
+  ListNotFound,
 } from '../components';
+import ProductListHeader from './ProductListHeader';
 import Const from '../const';
 
 const captains = console;
@@ -217,24 +215,10 @@ function ProductList({
     {!mounted ? <Progress processing={true} /> :
       <div>
         <div className={classes.root}>
-          <Toolbar
-            className={classes.headerRoot}
-          >
-            <Typography className={classes.headerTitle} variant="h5" id="tableTitle" component="div">
-              商品一覧
-            </Typography>
-            <Tooltip title="Add">
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                startIcon={<AddIcon />}
-                onClick={addNewProduct}
-              >
-                Add
-            </Button>
-            </Tooltip>
-          </Toolbar>
+          <ProductListHeader
+            title={'商品一覧'}
+            addNewProduct={addNewProduct}
+          />
           <form
             autoComplete="off"
             noValidate
@@ -287,14 +271,7 @@ function ProductList({
             </Card>
           </form>
           {/* No Results */}
-          {searched && 0 === rows.length &&
-            <>
-              <Box mb='1rem' />
-              <Typography variant="subtitle1" id="noResults" component="div">
-                検索結果がありません。
-              </Typography>
-            </>
-          }
+          {searched && 0 === rows.length && <ListNotFound />}
           {/* else */}
           {searched && 0 < rows.length &&
             <>
