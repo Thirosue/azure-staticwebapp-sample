@@ -3,10 +3,12 @@ import { Route, Switch } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 
 import GlobalContext from '../context/global-context';
-import useConfirm from '../hooks/useConfirm';
-import useProducts from '../hooks/useProducts';
 import ProductDetail from './ProductDetail';
 import ProductList from './ProductList';
+import {
+  useConfirm,
+  useProducts,
+} from '../hooks';
 
 const captains = console;
 

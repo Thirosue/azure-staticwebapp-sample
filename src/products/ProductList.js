@@ -32,6 +32,10 @@ import {
   ListNotFound,
 } from '../components';
 import ProductListHeader from './ProductListHeader';
+import {
+  useUnmountRef,
+  useSafeState,
+} from '../hooks';
 import Const from '../const';
 
 const captains = console;
@@ -102,14 +106,15 @@ function ProductList({
   const classes = useStyles();
   const { register, handleSubmit } = useForm();
 
+  const unmountRef = useUnmountRef();
   const [mounted, setMounted] = React.useState(false);
-  const [searched, setSearched] = React.useState(false);
+  const [searched, setSearched] = useSafeState(unmountRef, false);
   const [form, setForm] = React.useState({});
-  const [rows, setRows] = React.useState([]);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
-  const [count, setCount] = React.useState(0); // Total Count
+  const [rows, setRows] = useSafeState(unmountRef, []);
+  const [count, setCount] = useSafeState(unmountRef, 0);  // Total Count
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(Const.defaultPageSize);
 
