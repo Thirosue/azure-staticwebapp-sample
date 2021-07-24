@@ -19,12 +19,14 @@ import {
   CardContent,
   Button,
   Grid,
-  TextField,
 } from '@material-ui/core';
 import {
   Search as SearchIcon
 } from '@material-ui/icons';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import {
+  CustomTextField,
   TablePaginationActions,
   EnhancedTableToolbar,
   EnhancedTableHead,
@@ -74,6 +76,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const schema = yup.object().shape({
+  name: yup.string(),
+  description: yup.string(),
+});
+
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'description', numeric: false, disablePadding: true, label: 'Description' },
@@ -104,7 +111,9 @@ function ProductList({
   history,
 }) {
   const classes = useStyles();
-  const { register, handleSubmit } = useForm();
+  const { control, handleSubmit } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const unmountRef = useUnmountRef();
   const [mounted, setMounted] = React.useState(false);
@@ -235,25 +244,25 @@ function ProductList({
                   spacing={2}
                 >
                   <Grid item xs={6} md={6}>
-                    <TextField
+                    <CustomTextField
                       id="name"
                       name="name"
                       label="商品名"
                       defaultValue={form.name}
                       fullWidth
-                      inputRef={register}
                       variant="outlined"
+                      control={control}
                     />
                   </Grid>
                   <Grid item xs={6} md={6}>
-                    <TextField
+                    <CustomTextField
                       id="description"
                       name="description"
                       label="商品説明"
                       defaultValue={form.description}
                       fullWidth
-                      inputRef={register}
                       variant="outlined"
+                      control={control}
                     />
                   </Grid>
                 </Grid>
@@ -271,7 +280,7 @@ function ProductList({
                   onClick={handleSubmit(search)}
                 >
                   Search
-              </Button>
+                </Button>
               </Box>
             </Card>
           </form>
