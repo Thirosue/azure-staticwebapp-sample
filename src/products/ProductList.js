@@ -157,12 +157,12 @@ function ProductList({
   const pushState = (query) =>
     history.push(`/products?${querystring.stringify(query)}`);
 
-  const handleChangePage = async (_, newPage) => {
+  const handlePageChange = async (_, newPage) => {
     const query = parseQuery(history);
     pushState({ ...query, page: newPage });
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleRowsPerPageChange = (event) => {
     const query = parseQuery(history);
     const rowsPerPage = parseInt(event.target.value);
     pushState({ ...query, page: 0, rows: rowsPerPage });
@@ -353,8 +353,8 @@ function ProductList({
                             inputProps: { 'aria-label': 'Rows per page' },
                             native: true,
                           }}
-                          onChangePage={handleChangePage}
-                          onChangeRowsPerPage={handleChangeRowsPerPage}
+                          onPageChange={handlePageChange}
+                          onRowsPerPageChange={handleRowsPerPageChange}
                           ActionsComponent={TablePaginationActions}
                         />
                       </TableRow>
