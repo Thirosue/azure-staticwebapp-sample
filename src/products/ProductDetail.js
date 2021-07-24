@@ -7,12 +7,13 @@ import {
   CardHeader,
   Divider,
   Grid,
-  TextField,
   makeStyles,
   Button,
 } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
-import { Submit } from '../components';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { CustomTextField, Submit } from '../components';
 
 const captains = console;
 
@@ -26,6 +27,12 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+const schema = yup.object().shape({
+  name: yup.string().required(),
+  description: yup.string(),
+  quantity: yup.number().required(),
+});
+
 function ProductDetail({
   product,
   handleCancelProduct,
@@ -33,7 +40,9 @@ function ProductDetail({
   history,
 }) {
   const classes = useStyles();
-  const { register, handleSubmit, errors } = useForm();
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   useEffect(() => {
     captains.log(product);
@@ -65,49 +74,46 @@ function ProductDetail({
               spacing={3}
             >
               <Grid item xs={12} md={12}>
-                <TextField
+                <CustomTextField
                   required
                   id="name"
                   name="name"
                   label="商品名"
-                  defaultValue={product?.name}
                   fullWidth
-                  inputRef={register({ required: true })}
-                  error={Boolean(errors.name)}
-                  helperText={errors.name && '入力してください'}
                   variant="outlined"
+                  defaultValue={product?.name}
+                  rules={{ required: true }}
+                  control={control}
+                  error={errors.name ? true : false}
+                  helperText={errors.name && '入力してください'}
                 />
               </Grid>
               <Grid item xs={12} md={12}>
-                <TextField
+                <CustomTextField
                   id="description"
                   name="description"
                   label="商品説明"
-                  defaultValue={product?.description}
                   fullWidth
                   multiline
                   rows={3}
-                  inputRef={register}
                   variant="outlined"
+                  defaultValue={product?.description}
+                  control={control}
                 />
               </Grid>
               <Grid item xs={12} md={12}>
-                <TextField
+                <CustomTextField
                   required
                   id="quantity"
                   name="quantity"
                   label="数量"
-                  defaultValue={product?.quantity}
                   fullWidth
-                  inputRef={register({
-                    required: true,
-                    pattern: {
-                      value: /^[0-9]*$/i
-                    }
-                  })}
-                  helperText={errors.quantity && '数値のみで入力してください'}
-                  error={Boolean(errors.quantity)}
                   variant="outlined"
+                  defaultValue={product?.quantity}
+                  rules={{ required: true }}
+                  control={control}
+                  error={errors.quantity ? true : false}
+                  helperText={errors.quantity && '数値を入力してください'}
                 />
               </Grid>
             </Grid>

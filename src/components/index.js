@@ -1,3 +1,4 @@
+import CustomTextField from './atoms/CustomTextField';
 import HeaderBar from './layouts/HeaderBar';
 import NavBar from './layouts/NavBar';
 import NotFound from './NotFound';
@@ -9,6 +10,7 @@ import Progress from './Progress';
 import Submit from './Submit';
 
 export {
+  CustomTextField,
   HeaderBar,
   NavBar,
   NotFound,
