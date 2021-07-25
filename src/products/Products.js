@@ -60,6 +60,7 @@ function Products({ history }) {
     const message = {
       value: '商品の更新が完了しました'
     };
+    selectProduct(product); // useFormでデフォルト値を指定するとonChangeイベントのvalueが使われないため、productを更新して、更新前の値を表示させないようにする
     context.startProcess();
     const updateFunc = product.id ? updateProduct : addProduct;
     await updateFunc(product).finally(() => context.endProcess());
