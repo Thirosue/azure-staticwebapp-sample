@@ -21,3 +21,4 @@ RUN su node -c "source /usr/local/share/nvm/nvm.sh && nvm install 16"
 RUN su node -c "source /usr/local/share/nvm/nvm.sh && nvm use 16"
 
 RUN npm install -g azure-functions-core-tools@2 --unsafe-perm true
+RUN npm install -g @azure/static-web-apps-cli@0.6.1
