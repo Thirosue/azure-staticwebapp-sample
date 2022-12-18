@@ -14,13 +14,13 @@ This project was created to help represent a fundamental app written with React.
 2. Install the npm packages
 
    ```bash
-   yarn install
+   npm i
    ```
 
 3. Run the app
 
    ```bash
-   yarn start
+   npm run start
    ```
 
 ## Run authentication on your laptop
@@ -34,20 +34,13 @@ This project was created to help represent a fundamental app written with React.
 2. Run the app
 
    ```bash
-   yarn start
+   npm run start
    ```
 
-3. Run the Api
+3. Run the Emulator
 
    ```bash
-   cd api
-   func start
-   ```
-
-4. Run the Emulator
-
-   ```bash
-   swa start http://localhost:3000 --api ./api
+   swa start http://localhost:3000 --api-location ./api
    ```
 
 5. Go to `http://localhost:4280`
