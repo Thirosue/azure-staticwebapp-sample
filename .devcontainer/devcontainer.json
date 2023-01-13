@@ -5,6 +5,7 @@
 	},
 	"forwardPorts": [
 		3000,
+		4280,
 		7071
 	],
 	// Configure tool-specific properties.
